@@ -17,7 +17,7 @@ export const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) =
   };
 
   return (
-    <form onSubmit={handleSubmit} className="chat-input-container">
+    <form onSubmit={handleSubmit} className="chat-input-container rounded-b-lg">
       <div className="input-wrapper">
         <input
           type="text"

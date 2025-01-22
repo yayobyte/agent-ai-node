@@ -16,9 +16,9 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border: 1px solid #c1c3c6;  /* Fixed border syntax */
-  border-radius: 8px;         /* Optional: adds rounded corners */
+  border: 1px solid #cbcccc;  /* Fixed border syntax */
   box-shadow: 0px 2px 6px rgba(0,0,0,0.4); /* Optional: adds depth */
+  border-radius: 8px;         /* Optional: adds rounded corners */
 }
 
 .messages {
