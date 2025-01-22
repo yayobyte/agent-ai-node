@@ -44,13 +44,13 @@ export const ChatContainer = () => {
   };
 
   return (
-    <div className="chat-container">
+    <div className="w-[400px] mx-auto h-screen flex flex-col border border-gray-300 rounded-lg shadow-lg shadow-slate-500">
       <ChatHeader />
-      <div className="messages">
+      <div className="flex-1 overflow-y-auto p-5">
         {messages.map(message => (
           <MessageBubble key={message.id} message={message} />
         ))}
-        {loading && <div className="loading">Loading...</div>}
+        {loading && <div className="text-center p-2.5 text-gray-500">Loading...</div>}
       </div>
       <ChatInput onSendMessage={handleSendMessage} />
     </div>

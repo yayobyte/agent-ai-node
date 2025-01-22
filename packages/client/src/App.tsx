@@ -3,7 +3,7 @@ import { ChatContainer } from './components/ChatContainer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="flex justify-center items-center h-screen bg-gray-50">
       <ChatContainer />
     </div>
   );
