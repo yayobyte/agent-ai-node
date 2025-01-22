@@ -1,27 +1,16 @@
 {
-  "name": "express-typescript-server",
-  "version": "1.0.0",
-  "description": "A simple Express server built with TypeScript.",
-  "main": "src/server.ts",
-  "scripts": {
-    "start": "node dist/server.js",
-    "dev": "nodemon",
-    "build": "tsc"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.17.1",
-    "openai": "^4.79.4"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^22.10.7",
-    "jest": "^27.0.6",
-    "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
-  },
-  "author": "",
-  "license": "ISC"
+    "name": "weather-chat-monorepo",
+    "private": true,
+    "workspaces": [
+      "packages/*"
+    ],
+    "scripts": {
+      "dev": "yarn workspaces run dev",
+      "build": "yarn workspaces run build",
+      "start": "yarn workspaces run start",
+      "dev:client": "yarn workspace client dev",
+      "dev:server": "yarn workspace server dev"
+    },
+    "dependencies": {},
+    "devDependencies": {}
 }
