@@ -21,7 +21,7 @@ export async function getCompletion(city: City) {
     return await openai.chat.completions.create({
         model: MODELS.GPT35TURBO,
         messages: [
-            { role: "system", content: prompts.systemPrompt },
+            { role: "system", content: prompts.reActSystemPrompt() },
             { role: "user", content: prompts.hardcodedAgentPrompt(city) },
         ],
         store: true,
