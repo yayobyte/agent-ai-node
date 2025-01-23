@@ -1,7 +1,8 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import { prompts } from "./prompts";
-import { City } from "./weatherHelper";
+import { availableActions, City } from "./weatherHelper";
+import { extractAction } from "./promptParser";
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ export async function getCompletion(city: City) {
 /* REAL FUN STARTS HERE */
 
 //This function uses a mocked weather api with a reAct Prompt but only does one loop
-async function reActPromptOneLoop(city: City) {
+async function reActPrompt(city: City) {
     return await openai.chat.completions.create({
         model: MODELS.GPT35TURBO,
         messages: [
@@ -33,4 +34,42 @@ async function reActPromptOneLoop(city: City) {
         ],
         store: true,
     });
+}
+
+async function reActPromptOneLoop(city: City) {
+    console.log('--------------------------------------')
+    let message = ''
+    const completion = await openai.chat.completions.create({
+        model: MODELS.GPT35TURBO,
+        messages: [
+            { role: "system", content: prompts.reActSystemPromptWithJsonFunction() },
+            { role: "user", content: prompts.hardcodedAgentPrompt(city) },
+        ],
+        store: true,
+    });
+
+    message = completion.choices[0].message.content || ''
+
+    console.log(message)
+    const action = extractAction(message)
+
+    // Call our available actions
+    if (action?.function && action.parameter) { 
+        const weatherInfo = availableActions[action.function](action.parameter as City)
+        const completion2 = await openai.chat.completions.create({
+            model: MODELS.GPT35TURBO,
+            messages: [
+                { role: "system", content: prompts.reActSystemPromptWithJsonFunction() },
+                { role: "user", content: prompts.hardcodedAgentPrompt(city) },
+                { role: "user", content: 'Action_Response: ' + weatherInfo },
+            ],
+            store: true,
+        });
+
+        const message2 = completion.choices[0].message.content || ''
+        console.log(message2)
+        return completion2
+    }
+
+    return completion
 }

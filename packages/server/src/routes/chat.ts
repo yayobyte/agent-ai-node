@@ -18,7 +18,6 @@ export const chatRouter = (app: Express) => {
 
         try {
             const response = await getCompletion(city)
-            console.log(response)
             res.status(200).send({ response });
             
         } catch (error) {

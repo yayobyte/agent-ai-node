@@ -10,6 +10,11 @@ const WEATHER_CONDITIONS = {
     DELI: 'Hazy', //Intentional typo
 } as const;
 
+export const availableActions = {
+    getWeather: (city: City) => getWeather(city),
+    sayNotingRelevant: (city: City) => 'I have nothing relevant to say',
+}
+
 export type City = keyof typeof WEATHER_CONDITIONS;
 
 export function getWeather(city: City) {
