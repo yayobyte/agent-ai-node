@@ -12,7 +12,7 @@ export const chatRouter = (app: Express) => {
         const message = req.body.message as string;
         const city = cityExtractor(message);
         if (!city) {
-            res.status(200).send({ response: 'I have no training to get information from that city' });
+            res.status(200).send({ response: ['I have no training to get information from that city'] });
             return;
         }
 

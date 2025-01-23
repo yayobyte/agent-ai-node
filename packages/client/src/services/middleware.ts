@@ -24,13 +24,15 @@ export const sendMessage = async ({ text, onSuccess, onLoading } : SendMessagePr
 
     try {
         const response = await apiSendMessage(text);
-        const botMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            text: response.response,
-            sender: 'bot',
-            timestamp: new Date(),
-        };
-        onSuccess(prev => [...prev, botMessage]);
+        response.response.forEach((response: string) => {
+            const botMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                text: response,
+                sender: 'bot',
+                timestamp: new Date(),
+            };
+            onSuccess(prev => [...prev, botMessage]);
+        })
     } catch (error) {
         console.error('Error:', error);
     } finally {

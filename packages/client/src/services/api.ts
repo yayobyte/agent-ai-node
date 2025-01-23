@@ -1,7 +1,5 @@
 export interface ChatResponse {
-  city: string;
-  weatherInfo: string;
-  response: string;
+  response: string[];
 }
 
 const PORT = 3001
@@ -34,7 +32,7 @@ export const apiSendMessage = async (message: string): Promise<ChatResponse> => 
   }
 };
 
-export const apiGetHello = async (): Promise<string> => {
+export const apiGetHello = async (): Promise<{ message: string }> => {
   const endpoint = `${HOST}:${PORT}/`
   try {
     const response = await fetch(endpoint, {
