@@ -17,7 +17,14 @@ const openai = new OpenAI({
     apiKey: OPENAI_API_KEY
   });
 export async function getCompletion(city: City) {
-    
+    const completion = await reActPromptOneLoop(city)
+    return completion?.choices[0]?.message?.content
+}
+
+/* REAL FUN STARTS HERE */
+
+//This function uses a mocked weather api with a reAct Prompt but only does one loop
+async function reActPromptOneLoop(city: City) {
     return await openai.chat.completions.create({
         model: MODELS.GPT35TURBO,
         messages: [

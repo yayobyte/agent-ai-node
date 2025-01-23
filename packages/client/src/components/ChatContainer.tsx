@@ -1,46 +1,30 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageBubble } from './MessageBubble';
 import { ChatInput } from './ChatInput';
-import { sendMessage } from '../services/api';
+import { getHelloMessage, sendMessage } from '../services/middleware';
 import { Message } from '../types';
 import { ChatHeader } from './ChatHeader';
 
-const botMessage: Message = {
-  id: (Date.now() + 1).toString(),
-  text: 'Hello! How can I help you today?',
-  sender: 'bot',
-  timestamp: new Date(),
-};
-
 export const ChatContainer = () => {
-  const [messages, setMessages] = useState<Message[]>([botMessage]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    getHelloMessage({ onSuccess: setMessages, onLoading: setLoading });
+  }, [])
+
   const handleSendMessage = async (text: string) => {
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setLoading(true);
-
-    try {
-      const response = await sendMessage(text);
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: response.response,
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
+    await sendMessage({ text, onSuccess: setMessages, onLoading: setLoading });
+    scrollToBottom();
   };
 
   return (
@@ -50,9 +34,9 @@ export const ChatContainer = () => {
         {messages.map(message => (
           <MessageBubble key={message.id} message={message} />
         ))}
-        {loading && <div className="text-center p-2.5 text-gray-500">Loading...</div>}
+        <div ref={messagesEndRef} />
       </div>
-      <ChatInput onSendMessage={handleSendMessage} />
+      <ChatInput onSendMessage={handleSendMessage} disabled={loading} />
     </div>
   );
 };
