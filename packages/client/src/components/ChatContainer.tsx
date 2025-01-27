@@ -4,6 +4,7 @@ import { ChatInput } from './ChatInput';
 import { getHelloMessage, sendMessage } from '@weather-chat/common/src/services/middleware';
 import { Message } from '../types';
 import { ChatHeader } from './ChatHeader';
+import { Loading } from './Loading';
 
 export const ChatContainer = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -34,6 +35,7 @@ export const ChatContainer = () => {
         {messages.map(message => (
           <MessageBubble key={message.id} message={message} />
         ))}
+        {loading && <Loading />}
         <div ref={messagesEndRef} />
       </div>
       <ChatInput onSendMessage={handleSendMessage} disabled={loading} />

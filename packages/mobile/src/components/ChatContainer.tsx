@@ -5,6 +5,7 @@ import { ChatInput } from './ChatInput';
 import { ChatHeader } from './ChatHeader';
 import { getHelloMessage, sendMessage } from '@weather-chat/common/src/services/middleware';
 import { Message } from '@weather-chat/common/src/types/chat';
+import { Loading } from './Loading';
 
 export function ChatContainer() {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -37,8 +38,9 @@ export function ChatContainer() {
         contentContainerStyle={styles.messageContent}
       >
         {messages.map(message => (
-          <MessageBubble key={message.id} message={message} />
+          <MessageBubble message={message} />
         ))}
+        {loading && <Loading />}
       </ScrollView>
       <ChatInput onSendMessage={handleSendMessage} disabled={loading} />
     </View>
@@ -49,16 +51,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8
   },
   messageList: {
     flex: 1,

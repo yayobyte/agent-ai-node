@@ -9,7 +9,9 @@ export const MessageBubble = ({ message }: Props) => (
   <View style={[
     styles.container,
     message.sender === 'user' ? styles.userContainer : styles.botContainer
-  ]}>
+  ]}
+    key={message.id}  
+  >
     <Text style={styles.timestamp}>
       {new Date(message.timestamp).toLocaleTimeString([], { 
         hour: '2-digit', 

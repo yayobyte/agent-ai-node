@@ -16,7 +16,6 @@ export const apiSendMessage = async (message: string): Promise<ChatResponse> => 
       headers: {
         'Content-Type': 'application/json',
       },
-      signal: AbortSignal.timeout(5000), // 5 second timeout
     });
 
     if (!response.ok) {
@@ -40,7 +39,6 @@ export const apiGetHello = async (): Promise<{ message: string }> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      signal: AbortSignal.timeout(5000), // 5 second timeout
     });
 
     if (!response.ok) {
