@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ChatGPTIcon from '../assets/icons8-chatear-100.svg'
+import ChatGPTIcon from '@weather-chat/common/assets/icons8-chatear-100.svg'
 
 interface ChatHeaderProps {
   botName?: string;

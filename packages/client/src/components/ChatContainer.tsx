@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageBubble } from './MessageBubble';
 import { ChatInput } from './ChatInput';
-import { getHelloMessage, sendMessage } from '../services/middleware';
+import { getHelloMessage, sendMessage } from '@weather-chat/common/src/services/middleware';
 import { Message } from '../types';
 import { ChatHeader } from './ChatHeader';
 

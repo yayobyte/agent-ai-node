@@ -1,68 +1,34 @@
-# README.md
+# Contents of /weather-chat-monorepo/README.md
 
-# Express TypeScript Server
+# Weather Chat Monorepo
 
-This project is a simple Express server built with TypeScript. It serves as a starting point for building RESTful APIs using Express and TypeScript.
+This monorepo contains multiple packages for a weather chat application, including client, server, mobile, and a common package for shared code.
 
-## Features
+## Packages
 
-- Type-safe routes and middleware
-- Simple structure for organizing code
-- Unit tests for server functionality
+- **client**: The frontend application for users to interact with the weather chat.
+- **server**: The backend service that handles requests and manages data.
+- **mobile**: The mobile application for accessing the weather chat on mobile devices.
+- **common**: A shared package that contains reusable code, types, and utilities used across the other packages.
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js (version 14 or higher)
-- npm (Node package manager)
+To get started with the monorepo, you can install the dependencies and run the development servers for each package.
 
 ### Installation
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/express-typescript-server.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd express-typescript-server
-   ```
-
-3. Install the dependencies:
-
-   ```bash
-   npm install
-   ```
-
-### Configuration
-
-Create a `.env` file in the root directory and specify the necessary environment variables, such as:
-
-```
-PORT=3000
-```
-
-### Running the Server
-
-To start the server, run:
-
 ```bash
-npm start
+yarn install
 ```
 
-The server will be running on the specified port.
+### Running the Development Servers
 
-### Running Tests
+To run the development servers for each package, use the following commands:
 
-To run the unit tests, use:
+- For the client: `yarn workspace client dev`
+- For the server: `yarn workspace server dev`
+- For the mobile app: `yarn workspace mobile start`
 
-```bash
-npm test
-```
+## Contributing
 
-## License
-
-This project is licensed under the MIT License.
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any improvements or bug fixes.
