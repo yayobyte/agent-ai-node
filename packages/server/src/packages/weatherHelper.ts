@@ -8,7 +8,24 @@ const WEATHER_CONDITIONS = {
     TOKYO: 'Windy',
     ABU_DABI: 'Sunny', //Intentional typo
     DELI: 'Hazy', //Intentional typo
+    PARIS: 'Misty',
+    DUBAI: 'Hot',
+    SYDNEY: 'Warm',
+    MOSCOW: 'Freezing',
+    SINGAPORE: 'Humid',
+    CAIRO: 'Dusty',
+    MIAMI: 'Tropical',
+    VANCOUVER: 'Mild',
+    MUMBAI: 'Monsoon',
+    RIO: 'Sunny',
+    SEATTLE: 'Rainy',
+    MANCHESTER: 'Rainy',
+    BERGEN: 'Rainy',
+    PORTLAND: 'Rainy',
+    CARDIFF: 'Rainy',
+    GLASGOW: 'Rainy',
 } as const;
+
 
 export const availableActions = {
     getWeather: (city: City) => getWeather(city),

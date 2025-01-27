@@ -11,7 +11,7 @@ export const apiSendMessage = async (message: string): Promise<ChatResponse> => 
     const response = await fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify({
-        message,
+        userPrompt: message,
       }),
       headers: {
         'Content-Type': 'application/json',

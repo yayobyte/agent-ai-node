@@ -9,15 +9,15 @@ export const chatRouter = (app: Express) => {
 
     router.post('/chat', async (req, res) => {
         // Get params from request body
-        const message = req.body.message as string;
-        const city = cityExtractor(message);
+        const { userPrompt } = req.body;
+        const city = cityExtractor(userPrompt);
         if (!city) {
             res.status(200).send({ response: ['I have no training to get information from that city'] });
             return;
         }
 
         try {
-            const response = await getCompletion(city)
+            const response = await getCompletion(city || 'ABU_DABI', userPrompt)
             res.status(200).send({ response });
             
         } catch (error) {

@@ -8,6 +8,8 @@ dotenv.config();
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 
+const MAX_LOOPS = 5
+
 const MODELS = {
     GPT35TURBO: 'gpt-3.5-turbo',
     GPT40MINI: 'gpt-4o-mini',
@@ -17,8 +19,8 @@ const MODELS = {
 const openai = new OpenAI({
     apiKey: OPENAI_API_KEY
   });
-export async function getCompletion(city: City) {
-    return await reActPromptOneLoop(city)
+export async function getCompletion(city: City, userPrompt: string) {
+    return await reActPromptFiveLoops(userPrompt)
 }
 
 /* REAL FUN STARTS HERE */
@@ -37,22 +39,23 @@ async function reActPrompt(city: City) {
     return [response]
 }
 
-async function reActPromptOneLoop(city: City) {
+async function reActPromptOneLoop(userPrompt: string) {
     console.log('--------------------------------------')
-    let message = ''
+    let messageFromAgent = ''
+    let messageFromAgent2 = ''
     const completion = await openai.chat.completions.create({
         model: MODELS.GPT35TURBO,
         messages: [
             { role: "system", content: prompts.reActSystemPromptWithJsonFunction() },
-            { role: "user", content: prompts.hardcodedAgentPrompt(city) },
+            { role: "user", content: prompts.dynamicAgentPrompt(userPrompt) },
         ],
         store: true,
     });
 
-    message = completion.choices[0].message.content || ''
+    messageFromAgent = completion.choices[0].message.content || ''
 
-    console.log(message)
-    const action = extractAction(message)
+    console.log(messageFromAgent)
+    const action = extractAction(messageFromAgent)
 
     // Call our available actions
     if (action?.function && action.parameter) { 
@@ -61,16 +64,50 @@ async function reActPromptOneLoop(city: City) {
             model: MODELS.GPT35TURBO,
             messages: [
                 { role: "system", content: prompts.reActSystemPromptWithJsonFunction() },
-                { role: "user", content: prompts.hardcodedAgentPrompt(city) },
+                { role: "user", content: prompts.dynamicAgentPrompt(userPrompt) },
                 { role: "user", content: 'Action_Response: ' + weatherInfo },
             ],
             store: true,
         });
 
-        const message2 = completion.choices[0].message.content || ''
-        console.log(message2)
-        return [message, message2]
+        messageFromAgent2 = completion2.choices[0].message.content || ''
+        console.log(messageFromAgent2)
     }
 
-    return completion
+    return messageFromAgent2 ? [messageFromAgent, messageFromAgent2] : [messageFromAgent]
+}
+
+async function reActPromptFiveLoops(userPrompt: string) {
+    let loops = 0
+    let responseToTheUser = []
+    const messages = [
+        { role: "system" as const, content: prompts.reActSystemPromptWithJsonFunction() },
+        { role: "user" as const, content: prompts.dynamicAgentPrompt(userPrompt) },
+    ];
+    while (loops<MAX_LOOPS) {
+        console.log({loop: loops}, '--------------------------------------')
+
+        let messageFromAgent = ''
+        const completion = await openai.chat.completions.create({
+            model: MODELS.GPT35TURBO,
+            messages,
+            store: true,
+        });
+
+        messageFromAgent = completion.choices[0].message.content || ''
+        console.log(messageFromAgent)
+        const action = extractAction(messageFromAgent)
+
+        responseToTheUser.push(messageFromAgent)
+
+        // Call our available actions
+        if (action?.function && action.parameter) { 
+            const weatherInfo = availableActions[action.function](action.parameter as City)
+            // Push the message to the messages array so the next iteration can use it
+            messages.push({ role: "user", content: 'Action_Response: ' + weatherInfo })
+        }
+        loops++
+    }
+
+    return responseToTheUser
 }

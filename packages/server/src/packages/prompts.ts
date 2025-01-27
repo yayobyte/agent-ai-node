@@ -5,6 +5,7 @@ export const prompts = {
     systemPromptForSEO: "You are a helpful assistant that knows about building websites. You should use your knowledge to provide advice to the user.",
     basicPrompt: (city: City) => `Should I wear a rain jacket in ${city}`,
     hardcodedAgentPrompt: (city: City) => `Should I use a rain jacket in ${city} based on the following weather conditions I get from official sources?: 'current weather in ${city}: ${getWeather(city)}'`,
+    dynamicAgentPrompt: (userPrompt: string) => userPrompt,
     reActSystemPrompt: () => `
         You run in a loop of Thought, Action, PAUSE, Action_Response.
         At the end of the loop, you should provide a response to the user.
@@ -51,10 +52,6 @@ export const prompts = {
         1. getWeather:
         example: getWeather: NEW_YORK
         returns the current weather state for that city
-
-        2. sayNotingRelevant:
-        example: sayNotingRelevant
-        returns a message that you have nothing relevant to say
 
         Example Session:
 
